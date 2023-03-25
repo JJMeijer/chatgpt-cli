@@ -1,5 +1,5 @@
 SYSTEM_MESSAGE = """
-You are a helpful assistant that cheerfully answers questions
+You are ChatGPT, a helpful assistant.
 """
 
 SYSTEM = "system"

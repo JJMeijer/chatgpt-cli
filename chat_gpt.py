@@ -1,14 +1,19 @@
+from enum import Enum
 import os
 
-from dotenv import load_dotenv
+from rich.console import Console
 import openai
 
 from constants import ASSISTANT, SYSTEM, SYSTEM_MESSAGE, USER
-from console import console
 
-load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+console = Console()
 
+class CodeBlockStatus(Enum):
+    IDLE = 0
+    STARTING = 1
+    IN_PROGRESS = 2
+    ENDING = 3
 
 class ChatGPT:
     def __init__(self) -> None:
@@ -36,14 +41,15 @@ class ChatGPT:
             text = chunk["choices"][0]["delta"].get("content", "")
             full_message += text
 
-            console.print(text, overflow="ellipsis", end="")
+            console.print(text, end="")
 
-        console.line(2)
+        console.line()
 
         self.add_message(ASSISTANT, full_message)
         self.user_prompt()
 
     def user_prompt(self) -> None:
+        console.line()
         user_input = console.input(
             console.rule("[bold dark_turquoise]User"),
         )
