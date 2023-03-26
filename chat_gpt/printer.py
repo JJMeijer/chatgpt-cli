@@ -9,13 +9,15 @@ from .constants import LINE, WORD
 class Printer:
     """class used to print the text given by openai chat completion stream. The
     challeng is to detect when the stream starts a ``` block so we can switch to
-    printing per line instead of per char. This is to make the rich syntax formatting work.
-    It's easier to just always print per line, however it's more fun to print per char when possible.
+    printing per line instead of per word. This is to make the rich syntax formatting work.
+    It's easier to just always print per line, however it's more fun to print per word when possible.
     """
 
     def __init__(self) -> None:
         self.buffer = ""
         self.buffer_checked = False
+
+        self.stash = ""
 
         self.mode = WORD
 
@@ -45,9 +47,20 @@ class Printer:
         self.buffer += text
         self.detect_mode_switch()
 
-        # If in char mode, immediately print the text
+        # Always add the first 2 chars to the stash, in case we switch modes
+        if len(self.buffer) < 3:
+            self.stash += text
+            return
+
+        # In word mode print out the text + the optional stashed first 2 chars
         if self.mode == WORD:
-            console.print(text, end="")
+            console.print(self.stash + text, end="")
+            self.stash = ""
+
+        # In line mode when the buffer has more than 3 chars, the stash is reset
+        # as we will not be switching modes during this buffer.
+        if self.mode == LINE and len(self.buffer) >= 3:
+            self.stash = ""
 
     def reset_buffer(self) -> None:
         """Resets the buffer"""
