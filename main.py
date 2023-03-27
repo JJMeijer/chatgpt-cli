@@ -2,7 +2,8 @@ from chat_gpt import ChatGPT
 
 
 def main():
-    chatGPT = ChatGPT()
+    """Main function"""
+    chat_gpt = ChatGPT()
 
 
 if __name__ == "__main__":

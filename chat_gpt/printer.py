@@ -1,6 +1,6 @@
 import re
 
-# from rich.syntax import Syntax
+from rich.syntax import Syntax
 
 from .console import console
 from .constants import LINE, WORD
@@ -20,6 +20,8 @@ class Printer:
         self.stash = ""
 
         self.mode = WORD
+
+        self.language = ""
 
     def switch_mode(self) -> None:
         """Switches the printer mode from line to word or vice versa"""
@@ -54,6 +56,11 @@ class Printer:
 
         # In word mode print out the text + the optional stashed first 2 chars
         if self.mode == WORD:
+            # After switching back to word mode, we don't want to print the ``` part
+            if re.search(r"```$", self.stash + text):
+                self.stash = ""
+                return
+
             console.print(self.stash + text, end="")
             self.stash = ""
 
@@ -62,20 +69,23 @@ class Printer:
         if self.mode == LINE and len(self.buffer) >= 3:
             self.stash = ""
 
-    def reset_buffer(self) -> None:
-        """Resets the buffer"""
-        self.buffer = ""
-        self.buffer_checked = False
-
     def process_newline(self) -> None:
         """Processes a newline"""
         if self.mode == WORD:
             console.line()
 
         if self.mode == LINE:
-            console.print(self.buffer)
+            language_match = re.search(r"```(\w*)$", self.buffer)
+            if language_match:
+                self.language = language_match.group(1) or "bash"
 
-        self.reset_buffer()
+            # Don't add the ``` part.
+            else:
+                syntax = Syntax(self.buffer, self.language)
+                console.print(syntax)
+
+        self.buffer = ""
+        self.buffer_checked = False
 
     def add(self, text: str) -> None:
         """Adds text to the printer. This is the main method of the class."""
