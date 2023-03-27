@@ -14,7 +14,7 @@ type 'exit' or use ctrl-C to exit the conversation.
 
 ## Arguments
 
-|short|long &nbsp; &nbsp; &nbsp; &nbsp;|default|help|
+|short|long|default|help|
 | :--- | :--- | :--- | :--- |
 |`-h`|`--help`||show this help message and exit|
 |`-k`|`--key`|`None`|The OpenAI API key to use. Can also be set through the OPENAI_API_KEY environment variable. Defaults to None|
