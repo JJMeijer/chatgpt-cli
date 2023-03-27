@@ -1,21 +1,12 @@
 from argparse import ArgumentParser
 
 parser = ArgumentParser(
-    prog="Chat GPT CLI",
-    description="Terminal Interface for Chat GPT",
+    prog="chatgpt",
+    description="Terminal Interface for Chat GPT using rich package as the formatter",
 )
 
 parser.add_argument(
-    "--model",
-    action="store",
-    default="gpt-3.5-turbo",
-    dest="model",
-    required=False,
-    help="The model to use for the chat. Defaults to gpt-3.5-turbo",
-)
-
-parser.add_argument(
-    "--key",
+    "-k", "--key",
     action="store",
     default=None,
     dest="key",
@@ -24,7 +15,16 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--theme",
+    "-m", "--model",
+    action="store",
+    default="gpt-3.5-turbo",
+    dest="model",
+    required=False,
+    help="The model to use for the chat. Defaults to gpt-3.5-turbo",
+)
+
+parser.add_argument(
+    "-t", "--theme",
     action="store",
     default="gruvbox-dark",
     dest="theme",
