@@ -4,7 +4,7 @@ from rich.syntax import Syntax
 
 from .console import console
 from .constants import LINE, WORD
-
+from .arguments import args
 
 class Printer:
     """class used to print the text given by openai chat completion stream. The
@@ -78,10 +78,11 @@ class Printer:
             language_match = re.search(r"```(\w*)$", self.buffer)
             if language_match:
                 self.language = language_match.group(1) or "bash"
+                console.print(f"[bold]({self.language})")
 
             # Don't add the ``` part.
             else:
-                syntax = Syntax(self.buffer, self.language)
+                syntax = Syntax(self.buffer, self.language, theme=args.theme)
                 console.print(syntax)
 
         self.buffer = ""

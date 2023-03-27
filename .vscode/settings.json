@@ -4,6 +4,6 @@
     "python.linting.enabled": true,
     "pylint.args": [
         "--disable=C0114,C0115",
-        "--max-line-length=120"
+        "--max-line-length=125"
     ]
 }

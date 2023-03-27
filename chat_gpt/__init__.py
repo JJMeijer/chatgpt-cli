@@ -6,8 +6,18 @@ from .constants import ASSISTANT, SYSTEM, SYSTEM_MESSAGE, USER
 from .console import console
 from .printer import Printer
 from .exit_app import exit_app
+from .arguments import args
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+key = args.key or os.getenv("OPENAI_API_KEY")
+
+if not key:
+    console.print(
+        "[bold yellow]No API key was given through the --key argument or through the OPENAI_API_KEY environment variable.\n"
+    )
+
+    exit_app()
+
+openai.api_key = key
 
 
 class ChatGPT:
@@ -29,7 +39,7 @@ class ChatGPT:
         console.rule("[bold green4]ChatGPT")
 
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model=args.model,
             messages=self.messages,
             stream=True,
         )
@@ -42,7 +52,7 @@ class ChatGPT:
 
             printer.add(text)
 
-        console.line(2)
+        console.print("\n\n")
 
         self.add_message(ASSISTANT, full_message)
         self.user_prompt()
