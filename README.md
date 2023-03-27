@@ -10,6 +10,8 @@ Simple Python CLI to talk to ChatGPT in the terminal. Using [Rich](https://rich.
 python main.py [-h] [-m MODEL] [-k KEY] [-t THEME]
 ```
 
+type 'exit' or use ctrl-C to exit the conversation.
+
 ## Arguments
 
 |short|long|default|help|

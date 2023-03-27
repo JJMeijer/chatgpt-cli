@@ -4,7 +4,7 @@ from rich.syntax import Syntax
 
 from .console import console
 from .constants import LINE, WORD
-from .arguments import args
+
 
 class Printer:
     """class used to print the text given by openai chat completion stream. The
@@ -13,7 +13,9 @@ class Printer:
     It's easier to just always print per line, however it's more fun to print per word when possible.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, theme) -> None:
+        self.theme = theme
+
         self.buffer = ""
         self.buffer_checked = False
 
@@ -82,7 +84,7 @@ class Printer:
 
             # Don't add the ``` part.
             else:
-                syntax = Syntax(self.buffer, self.language, theme=args.theme)
+                syntax = Syntax(self.buffer, self.language, theme=self.theme)
                 console.print(syntax)
 
         self.buffer = ""
@@ -104,7 +106,7 @@ class Printer:
 
         for count, line in enumerate(lines):
             # There is more text to process after the newline
-            if len(lines) > 1 and count == len(lines) -1 and line != "":
+            if len(lines) > 1 and count == len(lines) - 1 and line != "":
                 self.add_to_buffer(line)
                 return
 

@@ -1,10 +1,16 @@
 from chat_gpt import ChatGPT
+from chat_gpt.arguments import parser
 
 
-def main():
+def main(key, model, theme):
     """Main function"""
-    chat_gpt = ChatGPT()
+    ChatGPT(key, model, theme)
 
 
 if __name__ == "__main__":
-    main()
+    args = parser.parse_args()
+    main(
+        key=args.key,
+        model=args.model,
+        theme=args.theme,
+    )

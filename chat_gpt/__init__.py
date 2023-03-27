@@ -6,23 +6,25 @@ from .constants import ASSISTANT, SYSTEM, SYSTEM_MESSAGE, USER
 from .console import console
 from .printer import Printer
 from .exit_app import exit_app
-from .arguments import args
-
-key = args.key or os.getenv("OPENAI_API_KEY")
-
-if not key:
-    console.print(
-        "[bold yellow]No API key was given through the --key argument or through the OPENAI_API_KEY environment variable.\n"
-    )
-
-    exit_app()
-
-openai.api_key = key
 
 
 class ChatGPT:
-    def __init__(self) -> None:
+    def __init__(self, key, model, theme) -> None:
         console.clear()
+
+        api_key = key or os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            console.print(
+                "[bold yellow]No API key was given through the --key argument or through the OPENAI_API_KEY environment variable.\n"
+            )
+
+            exit_app()
+
+        openai.api_key = api_key
+
+        self.model = model
+        self.theme = theme
+
         self.messages = [{"role": SYSTEM, "content": SYSTEM_MESSAGE}]
 
         self.run()
@@ -39,12 +41,12 @@ class ChatGPT:
         console.rule("[bold green4]ChatGPT")
 
         response = openai.ChatCompletion.create(
-            model=args.model,
+            model=self.model,
             messages=self.messages,
             stream=True,
         )
 
-        printer = Printer()
+        printer = Printer(self.theme)
 
         for chunk in response:
             text = chunk["choices"][0]["delta"].get("content", "")

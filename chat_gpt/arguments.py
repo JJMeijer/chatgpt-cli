@@ -6,7 +6,8 @@ parser = ArgumentParser(
 )
 
 parser.add_argument(
-    "-k", "--key",
+    "-k",
+    "--key",
     action="store",
     default=None,
     dest="key",
@@ -15,7 +16,8 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-m", "--model",
+    "-m",
+    "--model",
     action="store",
     default="gpt-3.5-turbo",
     dest="model",
@@ -24,12 +26,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-t", "--theme",
+    "-t",
+    "--theme",
     action="store",
     default="gruvbox-dark",
     dest="theme",
     required=False,
     help="The theme to use for syntax highlighting, available options are the pygments styles. Defaults to gruvbox-dark",
 )
-
-args = parser.parse_args()
